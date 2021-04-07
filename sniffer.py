@@ -2,5 +2,8 @@
 from scapy.all import *
 conf.use_pcap = True
 
-a=sniff(count = 1, prn=lambda x: x.show())
-a.nsummary()
+def print_packet(packet):
+    ip_layer = packet.getlayer(IP)
+    print("[!] New Packet: {src} -> {dst}".format(src=ip_layer.src, dst=ip_layer.dst))
+
+a=sniff(iface = "en0", filter = "ip", prn=print_packet)
